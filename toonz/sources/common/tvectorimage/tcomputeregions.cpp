@@ -4147,8 +4147,8 @@ void getLineExtensionClosingPoints(TStroke* stroke, const TVectorImageP& vi,
         for (const DoublePair& intersection : parIntersections) {
           // Use intersection.first and intersection.second here
           // if first W value is within min of the endpoint, mark the endpoint as unavailable;
-          TThickPoint* endpointW0 = &s1->getThickPoint(0);
-          TThickPoint* endpointW1 = &s1->getThickPoint(s1->getControlPointCount() - 1);
+          TThickPoint endpointW0 = s1->getThickPoint(0);
+          TThickPoint endpointW1 = s1->getThickPoint(s1->getControlPointCount() - 1);
 
           double distanceToW0 = s1->getApproximateLength(0.0, intersection.first, 1.0);
           double distanceToW1 = s1->getApproximateLength(1.0, intersection.first, 1.0);
@@ -4171,12 +4171,12 @@ void getLineExtensionClosingPoints(TStroke* stroke, const TVectorImageP& vi,
     const double angleOffset = angleOffsetDegrees * M_PI / 180.0; // Radians
 
     // --- ENDPOINT W0  ---
-    TThickPoint* endpointW0 = &s1->getThickPoint(0);
+    TThickPoint endpointW0 = s1->getThickPoint(0);
 
-    if (isEndpointInScope(selectImg, *endpointW0) && isW0available) {
+    if (isEndpointInScope(selectImg, endpointW0) && isW0available) {
       const TThickQuadratic* startChunk = s1->getChunk(0);
 
-      if (hasEndpointOverlap(vi, i, *endpointW0)) {
+      if (hasEndpointOverlap(vi, i, endpointW0)) {
       }
       else {
         auto P0 = std::make_pair(startChunk->getThickP0().x, startChunk->getThickP0().y);
@@ -4193,9 +4193,9 @@ void getLineExtensionClosingPoints(TStroke* stroke, const TVectorImageP& vi,
         // --- CREATE EXTENSIONS ---
         endpointList.push_back(EndpointData{ i, true, true });
         const UINT epIndex = endpointList.size() - 1;
-        addExtensionStroke(vaux, extensionList, *endpointW0, startCenter, i, epIndex, true, true, lineExtensionColorstyle);
-        addExtensionStroke(vaux, extensionList, *endpointW0, startLeft, i, epIndex, true, false, lineExtensionColorstyle);
-        addExtensionStroke(vaux, extensionList, *endpointW0, startRight, i, epIndex, true, false, lineExtensionColorstyle);
+        addExtensionStroke(vaux, extensionList, endpointW0, startCenter, i, epIndex, true, true, lineExtensionColorstyle);
+        addExtensionStroke(vaux, extensionList, endpointW0, startLeft, i, epIndex, true, false, lineExtensionColorstyle);
+        addExtensionStroke(vaux, extensionList, endpointW0, startRight, i, epIndex, true, false, lineExtensionColorstyle);
       }
     }
 
