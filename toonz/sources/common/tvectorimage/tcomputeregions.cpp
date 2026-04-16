@@ -4200,12 +4200,12 @@ void getLineExtensionClosingPoints(TStroke* stroke, const TVectorImageP& vi,
     }
 
     // --- ENDPOINT W1 ---
-    TThickPoint* endpointW1 = &s1->getThickPoint(s1->getControlPointCount() - 1);
+    TThickPoint endpointW1 = s1->getThickPoint(s1->getControlPointCount() - 1);
 
-    if (isEndpointInScope(selectImg, *endpointW1) && isW1available) {
+    if (isEndpointInScope(selectImg, endpointW1) && isW1available) {
       const TThickQuadratic* endChunk = s1->getChunk(s1->getChunkCount() - 1);
 
-      if (!hasEndpointOverlap(vi, i, *endpointW1)) {
+      if (!hasEndpointOverlap(vi, i, endpointW1)) {
         auto P0 = std::make_pair(endChunk->getThickP0().x, endChunk->getThickP0().y);
         auto P1 = std::make_pair(endChunk->getThickP1().x, endChunk->getThickP1().y);
         auto P2 = std::make_pair(endChunk->getThickP2().x, endChunk->getThickP2().y);
@@ -4219,9 +4219,9 @@ void getLineExtensionClosingPoints(TStroke* stroke, const TVectorImageP& vi,
         // --- CREATE EXTENSIONS ---
         endpointList.push_back(EndpointData{ i, false, true });
         const UINT epIndex = endpointList.size() - 1;
-        addExtensionStroke(vaux, extensionList, *endpointW1, endCenter, i, epIndex, false, true, lineExtensionColorstyle);
-        addExtensionStroke(vaux, extensionList, *endpointW1, endLeft, i, epIndex, false, false, lineExtensionColorstyle);
-        addExtensionStroke(vaux, extensionList, *endpointW1, endRight, i, epIndex, false, false, lineExtensionColorstyle);
+        addExtensionStroke(vaux, extensionList, endpointW1, endCenter, i, epIndex, false, true, lineExtensionColorstyle);
+        addExtensionStroke(vaux, extensionList, endpointW1, endLeft, i, epIndex, false, false, lineExtensionColorstyle);
+        addExtensionStroke(vaux, extensionList, endpointW1, endRight, i, epIndex, false, false, lineExtensionColorstyle);
       }
     }
   }
@@ -4449,8 +4449,8 @@ void getLineExtensionClosingPoints(TStroke* stroke, const TVectorImageP& vi,
 
           // add the new stroke.
 
-          TThickPoint* startPoint = &s1P0ThickPoint;
-          TThickPoint* endPoint = &s2P0ThickPoint;
+          TThickPoint startPoint = s1P0ThickPoint;
+          TThickPoint endPoint = s2P0ThickPoint;
 
           // add these points to vaux
           std::vector<TThickPoint> points(3);
@@ -4458,8 +4458,8 @@ void getLineExtensionClosingPoints(TStroke* stroke, const TVectorImageP& vi,
           TThickPoint p0;
           TThickPoint p2;
 
-          p0 = *startPoint;
-          p2 = *endPoint;
+          p0 = startPoint;
+          p2 = endPoint;
 
           points[0] = p0;
           points[1] = 0.5 * (p0 + p2);
@@ -4475,16 +4475,16 @@ void getLineExtensionClosingPoints(TStroke* stroke, const TVectorImageP& vi,
 
         const TThickQuadratic* s1StartChunk = auxStroke->getChunk(0);
         TThickPoint s1P0ThickPoint = s1StartChunk->getThickP0();
-        TThickPoint* startPoint = &s1P0ThickPoint;
-        TThickPoint* endPoint = new TThickPoint(currIntersection.x, currIntersection.y);
+        TThickPoint startPoint = s1P0ThickPoint;
+        TThickPoint endPoint = TThickPoint(currIntersection.x, currIntersection.y);
 
         std::vector<TThickPoint> points(3);
 
         TThickPoint p0;
         TThickPoint p2;
 
-        p0 = *startPoint;
-        p2 = *endPoint;
+        p0 = startPoint;
+        p2 = endPoint;
 
         points[0] = p0;
         points[1] = 0.5 * (p0 + p2);
